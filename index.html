@@ -5,10 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Document</title>
+    <title>Nim</title>
 </head>
 
 <body>
+    <form onsubmit="return start()">
+        <input type="radio" value="player" name="whoStarts" id="playerFirst" checked />
+        <label for="player">Player Goes First</label>
+    
+        <input type="radio" value="bot" name="whoStarts" id="botFirst"/>
+        <label for="bot">Bot Goes First</label>
+        <button type="submit">Go</button>
+    </form>
+
+
     <script src="nimscript.js"></script>
 </body>
 
