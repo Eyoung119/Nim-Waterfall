@@ -12,8 +12,11 @@ class MatchRow {
         this.isEmpty = isEmpty;
     }
 
-    pickUpMatches = (numberOfMatches) => {
-        numberOfMatches -= 1;
+    pickUpMatches = (numberOfMatches = 1) => {
+        for (let i = 0; i < numberOfMatches; i++) {
+            this.matches.pop();
+        }
+        this.isEmpty = this.matches.length <= 0
     }
 }
 
@@ -43,7 +46,7 @@ class Game {
     }
 
     isGameOver() {
-        return true;
+        return this.matchRows.filter(v => !v.isEmpty).length === 0
     }
 
     doBotTurn() {
@@ -56,24 +59,51 @@ class Game {
 }
 
 class Bot {
+    constructor(game) {
+        this.game = game
+    }
     doTurn() {
-
+        let rowNumsDec = this.game.matchRows.map((v, i) => v.matches.length)
+        let xorCalc = rowNumsDec.reduce((a, b) => a ^ b, 0)
+        console.log("Before Pickup: ", ...this.game.matchRows.map((v) => v.matches.length))
+        if (xorCalc > 0) {
+            for (let matchRow of this.game.matchRows) {
+                if (matchRow.matches.length >= xorCalc) {
+                    matchRow.pickUpMatches(xorCalc);
+                    break
+                }
+            }
+        } else {
+            let nonemptyRows = this.game.matchRows.filter((v) => !v.isEmpty)
+            let randomRow = nonemptyRows[Math.floor(Math.random() * nonemptyRows.length)]
+            randomRow.pickUpMatches(Math.floor(Math.random() * (randomRow.matches.length - 1) + 1))
+        }
     }
 }
 
+let game = new Game(true, [], undefined, false)
+let bot = new Bot(game)
+let testTurn = 1
+while (!game.isGameOver()) {
+    console.log(testTurn)
+    bot.doTurn()
+    console.log("After Pickup: ", ...game.matchRows.map((v) => v.matches.length))
+    testTurn++
+}
 
-const rowBtn1 = document.getElementById("rowBtn1");
-const rowBtn2 = document.getElementById("rowBtn2");
-const rowBtn3 = document.getElementById("rowBtn3");
-const rowBtn4 = document.getElementById("rowBtn4");
-const endTurnBtn = document.getElementById("endTurnBtn");
 
-rowBtn1.addEventListener("click", pickUpMatches(1));
-rowBtn2.addEventListener("click", pickUpMatches(3));
-rowBtn3.addEventListener("click", pickUpMatches(5));
-rowBtn4.addEventListener("click", pickUpMatches(7));
-endTurnBtn.addEventListener("click", changeTurn());
-console.log("Working")
+// const rowBtn1 = document.getElementById("rowBtn1");
+// const rowBtn2 = document.getElementById("rowBtn2");
+// const rowBtn3 = document.getElementById("rowBtn3");
+// const rowBtn4 = document.getElementById("rowBtn4");
+// const endTurnBtn = document.getElementById("endTurnBtn");
+
+// rowBtn1.addEventListener("click", pickUpMatches(1));
+// rowBtn2.addEventListener("click", pickUpMatches(3));
+// rowBtn3.addEventListener("click", pickUpMatches(5));
+// rowBtn4.addEventListener("click", pickUpMatches(7));
+// endTurnBtn.addEventListener("click", changeTurn());
+// console.log("Working")
 
 const start = () => {
     document.getElementById('startSelection').style.display = 'none';
