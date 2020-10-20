@@ -70,21 +70,20 @@ class Bot {
             for (let matchRow of this.game.matchRows) {
                 if (matchRow.matches.length >= xorCalc) {
                     matchRow.pickUpMatches(xorCalc);
-                    break
+                    return
                 }
             }
-        } else {
-            let nonemptyRows = this.game.matchRows.filter((v) => !v.isEmpty)
-            let randomRow = nonemptyRows[Math.floor(Math.random() * nonemptyRows.length)]
-            randomRow.pickUpMatches(Math.floor(Math.random() * (randomRow.matches.length - 1) + 1))
         }
+        let nonemptyRows = this.game.matchRows.filter((v) => !v.isEmpty)
+        let randomRow = nonemptyRows[Math.floor(Math.random() * (nonemptyRows.length - 1))]
+        randomRow.pickUpMatches(Math.floor(Math.random() * (randomRow.matches.length) + 1))
     }
 }
 
 let game = new Game(true, [], undefined, false)
 let bot = new Bot(game)
 let testTurn = 1
-while (!game.isGameOver()) {
+while (!game.isGameOver() && testTurn < 500) {
     console.log(testTurn)
     bot.doTurn()
     console.log("After Pickup: ", ...game.matchRows.map((v) => v.matches.length))
