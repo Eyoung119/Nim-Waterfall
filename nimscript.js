@@ -74,3 +74,12 @@ rowBtn2.addEventListener("click", pickUpMatches(3));
 rowBtn3.addEventListener("click", pickUpMatches(5));
 rowBtn4.addEventListener("click", pickUpMatches(7));
 endTurnBtn.addEventListener("click", changeTurn());
+console.log("Working")
+
+
+const start = () => {
+    document.getElementById('startSelection').style.display = 'none';
+    const playerFirst = document.getElementById('playerFirst').checked;
+    const botFirst = document.getElementById('botFirst').checked;
+    return false;
+}
