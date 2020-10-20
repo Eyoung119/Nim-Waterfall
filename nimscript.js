@@ -14,7 +14,7 @@ class MatchRow {
     }
 
     pickUpMatches = (numberOfMatches) => {
-
+        numberOfMatches -= 1;
     }
 }
 
@@ -62,3 +62,15 @@ class Bot {
     }
 }
 
+
+const rowBtn1 = document.getElementById("rowBtn1");
+const rowBtn2 = document.getElementById("rowBtn2");
+const rowBtn3 = document.getElementById("rowBtn3");
+const rowBtn4 = document.getElementById("rowBtn4");
+const endTurnBtn = document.getElementById("endTurnBtn");
+
+rowBtn1.addEventListener("click", pickUpMatches(1));
+rowBtn2.addEventListener("click", pickUpMatches(3));
+rowBtn3.addEventListener("click", pickUpMatches(5));
+rowBtn4.addEventListener("click", pickUpMatches(7));
+endTurnBtn.addEventListener("click", changeTurn());

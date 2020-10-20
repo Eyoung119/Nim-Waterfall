@@ -4,6 +4,7 @@ html, body {
 }
 
 /* align self/items/content flex-end */
+
 #gridContainer {
     display: grid;
     grid-template-columns: 80% 20%;
@@ -11,6 +12,8 @@ html, body {
     grid-gap: 10px;
     background-color: #2196F3;
     padding: 10px;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
 
 .gridItem {
@@ -20,10 +23,6 @@ html, body {
     font-size: 30px;
 }
 
-.row1 {
-    grid-column-start: 1;
-    grid-column-end: 3;
-}
 
 .rowBtn {
     background-color: #FFB0EF;
