@@ -24,6 +24,7 @@ let isPlaying = false;
 let matchRows = [];
 let selectedRow = undefined;
 let isBotTurn = false;
+const declareWinner = document.getElementById("declareWinner");
 
 class Game {
     constructor(isPlaying, matchRows, selectedRow, isBotTurn) {
@@ -43,6 +44,7 @@ class Game {
         matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false)], 3, false));
         matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false)], 5, false));
         matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false)], 7, false));
+        declareWinner.innerHTML = ""
     }
 
     isGameOver() {
@@ -55,6 +57,10 @@ class Game {
 
     changeTurn() {
 
+    }
+
+    checkWinner() {
+        isBotTurn ? (declareWinner.innerHTML = "Bot Won!") : (declareWinner.innerHTML = "Player Won!")
     }
 }
 
@@ -89,6 +95,7 @@ while (!game.isGameOver() && testTurn < 500) {
     console.log("After Pickup: ", ...game.matchRows.map((v) => v.matches.length))
     testTurn++
 }
+bot.checkWinner();
 
 
 // const rowBtn1 = document.getElementById("rowBtn1");
