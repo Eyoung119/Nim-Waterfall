@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Laila&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Nim</title>
 </head>
 
 <body>
-    <form onsubmit="if(!start()) window.location.href = 'matchPage.html'; return start()" id="startSelection">
+    <!-- <form onsubmit="if(start()){window.location.href = 'matchPage.html'}; return start()" id="startSelection"> -->
+    <form onsubmit="start()" id="startSelection" action='matchPage.html'>
         <input type="radio" value="player" name="whoStarts" id="playerFirst" checked />
         <label for="player">Player Goes First</label>
     
@@ -18,9 +20,7 @@
         <button type="submit">Go</button>
     </form>
     
-    <div id="declareWinner"></div>
-
-    <script src="nimscript.js"></script>
+    <script src="indexscript.js"></script>
 </body>
 
 </html>

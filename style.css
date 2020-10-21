@@ -1,6 +1,13 @@
 html, body {
     margin: 0;
     padding: 0;
+    font-family: 'Laila', serif;
+}
+
+#headerTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 50px;
 }
 
 /* align self/items/content flex-end */
@@ -10,21 +17,68 @@ html, body {
     grid-template-columns: 80% 20%;
     grid-template-rows: auto auto auto auto auto;
     grid-gap: 10px;
-    background-color: #2196F3;
     padding: 10px;
     grid-column-start: 1;
     grid-column-end: 3;
 }
 
-.gridItem {
-    background-color: rgba(255, 255, 255, 0.8);
+.gridRow1, .gridRow2, .gridRow3, .gridRow4, .gridRow5 {
+    /* display: flex;
+    justify-items: end; */
     text-align: center;
     padding: 20px 0;
     font-size: 30px;
 }
 
+/* The Matches */
+.gridRow1 {
+    grid-column: 1;
+}
 
-.rowBtn {
+.gridRow2 {
+    grid-column: 1;
+}
+
+.gridRow3 {
+    grid-column: 1;
+}
+
+.gridRow4 {
+    grid-column: 1;
+}
+
+/* .gridRow5 {
+    grid-column: 1;
+} */
+
+
+/* The buttons */
+.gridItem1 {
+    grid-row-start: 1;
+    grid-column: 2;
+}
+
+.gridItem2 {
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.gridItem3 {
+    grid-row: 3;
+    grid-column: 2;
+}
+
+.gridItem4 {
+    grid-row: 4;
+    grid-column: 2;
+}
+
+/* .gridItem5 {
+    grid-row: 5;
+    grid-column: 2;
+} */
+
+.gridItem1, .gridItem2, .gridItem3, .gridItem4, .gridItem5 {
     background-color: #FFB0EF;
     border: none;
     color: white;
