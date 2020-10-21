@@ -20,17 +20,13 @@ class MatchRow {
     }
 }
 
-let isPlaying = false;
-let matchRows = [];
-let selectedRow = undefined;
-let isBotTurn = false;
-
 class Game {
     constructor(isPlaying, matchRows, selectedRow, isBotTurn) {
         this.isPlaying = isPlaying;
         this.matchRows = matchRows;
         this.selectedRow = selectedRow;
         this.isBotTurn = isBotTurn;
+        this.bot = new Bot(this);
 
         matchRows.push(new MatchRow([new Match("", false)], 1, false));
         matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false)], 3, false));
@@ -50,7 +46,7 @@ class Game {
     }
 
     doBotTurn() {
-
+        this.bot.doTurn();
     }
 
     changeTurn() {
@@ -80,29 +76,75 @@ class Bot {
     }
 }
 
-let game = new Game(true, [], undefined, false)
-let bot = new Bot(game)
-let testTurn = 1
-while (!game.isGameOver() && testTurn < 500) {
-    console.log(testTurn)
-    bot.doTurn()
-    console.log("After Pickup: ", ...game.matchRows.map((v) => v.matches.length))
-    testTurn++
+let game = new Game(true, [], undefined, false);
+let pickUpMatchCount = 0;
+let selectedRow = undefined;
+
+//Find which row they are selecting from. Cant take from another
+//Count how many times they click the button
+//End turn reset(wait)
+//hide match
+function findRow(evt) {
+    if (evt.target.id === 'rowBtn1') {
+        pickUpMatchCount++;
+        selectedRow = game.matchRows[0];
+        console.log("Hit row1");
+        document.getElementById("rowBtn2").disabled = true;
+        document.getElementById("rowBtn3").disabled = true;
+        document.getElementById("rowBtn4").disabled = true;
+    }
+    else if (evt.target.id === 'rowBtn2') {
+        pickUpMatchCount++;
+        selectedRow = game.matchRows[1];
+        console.log("Hit row2");
+        document.getElementById("rowBtn1").disabled = true;
+        document.getElementById("rowBtn3").disabled = true;
+        document.getElementById("rowBtn4").disabled = true;
+    }
+    else if (evt.target.id === 'rowBtn3') {
+        pickUpMatchCount++;
+        selectedRow = game.matchRows[2];
+        console.log("Hit row3");
+        document.getElementById("rowBtn1").disabled = true;
+        document.getElementById("rowBtn2").disabled = true;
+        document.getElementById("rowBtn4").disabled = true;
+    }
+    else if (evt.target.id === 'rowBtn4') {
+        pickUpMatchCount++;
+        selectedRow = game.matchRows[3];
+        console.log("Hit row4");
+        document.getElementById("rowBtn1").disabled = true;
+        document.getElementById("rowBtn2").disabled = true;
+        document.getElementById("rowBtn3").disabled = true;
+    }
 }
 
+function endTurn() {
+    selectedRow.pickUpMatches(pickUpMatchCount);
+    pickUpMatchCount = 0;
+    selectedRow = undefined;
+    console.log(game.matchRows.map(v => v.matches.length));
 
-// const rowBtn1 = document.getElementById("rowBtn1");
-// const rowBtn2 = document.getElementById("rowBtn2");
-// const rowBtn3 = document.getElementById("rowBtn3");
-// const rowBtn4 = document.getElementById("rowBtn4");
-// const endTurnBtn = document.getElementById("endTurnBtn");
+    game.doBotTurn();
+    console.log(game.matchRows.map(v => v.matches.length));
 
-// rowBtn1.addEventListener("click", pickUpMatches(1));
-// rowBtn2.addEventListener("click", pickUpMatches(3));
-// rowBtn3.addEventListener("click", pickUpMatches(5));
-// rowBtn4.addEventListener("click", pickUpMatches(7));
-// endTurnBtn.addEventListener("click", changeTurn());
-// console.log("Working")
+    document.getElementById("rowBtn1").disabled = false;
+    document.getElementById("rowBtn2").disabled = false;
+    document.getElementById("rowBtn3").disabled = false;
+    document.getElementById("rowBtn4").disabled = false;
+}
+
+const rowBtn1 = document.getElementById("rowBtn1");
+const rowBtn2 = document.getElementById("rowBtn2");
+const rowBtn3 = document.getElementById("rowBtn3");
+const rowBtn4 = document.getElementById("rowBtn4");
+const endTurnBtn = document.getElementById("endTurnBtn");
+
+rowBtn1.addEventListener("click", findRow);
+rowBtn2.addEventListener("click", findRow);
+rowBtn3.addEventListener("click", findRow);
+rowBtn4.addEventListener("click", findRow);
+endTurnBtn.addEventListener("click", endTurn);
 
 const start = () => {
     document.getElementById('startSelection').style.display = 'none';
