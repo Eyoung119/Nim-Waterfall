@@ -20,6 +20,9 @@ class MatchRow {
     }
 }
 
+const declareWinner = document.getElementById("declareWinner");
+const rowIds = ["row1", "row2", "row3", "row4"];
+
 class Game {
     constructor(isPlaying, matchRows, selectedRow, isBotTurn) {
         this.isPlaying = isPlaying;
@@ -28,17 +31,26 @@ class Game {
         this.isBotTurn = isBotTurn;
         this.bot = new Bot(this);
 
-        matchRows.push(new MatchRow([new Match("", false)], 1, false));
-        matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false)], 3, false));
-        matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false)], 5, false));
-        matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false)], 7, false));
+        matchRows.push(new MatchRow([new Match("match.png", false)], 1, false));
+        matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 3, false));
+        matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 5, false));
+        matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 7, false));
+        for(let i = 0; i < rowIds.length; i++){
+            matchRows[i].matches.forEach(match => {
+                let node = document.createElement("img");
+                node.src = match.imageURI;
+                document.getElementById(rowIds[i]).appendChild(node);
+            });
+        }
     }
 
+
     resetGame() {
-        matchRows.push(new MatchRow([new Match("", false)], 1, false));
-        matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false)], 3, false));
-        matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false)], 5, false));
-        matchRows.push(new MatchRow([new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false), new Match("", false)], 7, false));
+        matchRows.push(new MatchRow([new Match("match.png", false)], 1, false));
+        matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 3, false));
+        matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 5, false));
+        matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("", false), new Match("match.png", false)], 7, false));
+        declareWinner.innerHTML = ""
     }
 
     isGameOver() {
@@ -51,6 +63,10 @@ class Game {
 
     changeTurn() {
 
+    }
+
+    checkWinner() {
+        isBotTurn ? (declareWinner.innerText = "Bot Won!") : (declareWinner.innerText = "Player Won!")
     }
 }
 
@@ -76,7 +92,8 @@ class Bot {
     }
 }
 
-let game = new Game(true, [], undefined, false);
+let isSelectedBot = sessionStorage.getItem('startBot');
+let game = new Game(true, [], undefined, isSelectedBot || false);
 let pickUpMatchCount = 0;
 let selectedRow = undefined;
 
@@ -145,10 +162,3 @@ rowBtn2.addEventListener("click", findRow);
 rowBtn3.addEventListener("click", findRow);
 rowBtn4.addEventListener("click", findRow);
 endTurnBtn.addEventListener("click", endTurn);
-
-const start = () => {
-    document.getElementById('startSelection').style.display = 'none';
-    const playerFirst = document.getElementById('playerFirst').checked;
-    const botFirst = document.getElementById('botFirst').checked;
-    return false;
-}
