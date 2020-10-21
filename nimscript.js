@@ -35,9 +35,10 @@ class Game {
         matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 3, false));
         matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 5, false));
         matchRows.push(new MatchRow([new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false), new Match("match.png", false)], 7, false));
-        for(let i = 0; i < rowIds.length; i++){
+        for (let i = 0; i < rowIds.length; i++) {
             matchRows[i].matches.forEach(match => {
                 let node = document.createElement("img");
+                node.classList.add("match")
                 node.src = match.imageURI;
                 document.getElementById(rowIds[i]).appendChild(node);
             });
@@ -59,6 +60,7 @@ class Game {
 
     doBotTurn() {
         this.bot.doTurn();
+        refreshMatches();
     }
 
     changeTurn() {
@@ -89,6 +91,7 @@ class Bot {
         let nonemptyRows = this.game.matchRows.filter((v) => !v.isEmpty)
         let randomRow = nonemptyRows[Math.floor(Math.random() * (nonemptyRows.length - 1))]
         randomRow.pickUpMatches(Math.floor(Math.random() * (randomRow.matches.length) + 1))
+        console.log("After Pickup: ", ...this.game.matchRows.map((v) => v.matches.length))
     }
 }
 
@@ -103,36 +106,80 @@ let selectedRow = undefined;
 //hide match
 function findRow(evt) {
     if (evt.target.id === 'rowBtn1') {
-        pickUpMatchCount++;
-        selectedRow = game.matchRows[0];
-        console.log("Hit row1");
-        document.getElementById("rowBtn2").disabled = true;
-        document.getElementById("rowBtn3").disabled = true;
-        document.getElementById("rowBtn4").disabled = true;
+        if (game.matchRows[0].matches.length > 0) {
+            pickUpMatchCount++;
+            selectedRow = game.matchRows[0];
+            console.log("Hit row1");
+            document.getElementById("rowBtn2").disabled = true;
+            document.getElementById("rowBtn3").disabled = true;
+            document.getElementById("rowBtn4").disabled = true;
+            game.matchRows[0].matches[pickUpMatchCount - 1].imageURI = "";
+            refreshMatchesTemp()
+        }
+    } else if (evt.target.id === 'rowBtn2') {
+        if (game.matchRows[1].matches.length > 0) {
+            pickUpMatchCount++;
+            selectedRow = game.matchRows[1];
+            console.log("Hit row2");
+            document.getElementById("rowBtn1").disabled = true;
+            document.getElementById("rowBtn3").disabled = true;
+            document.getElementById("rowBtn4").disabled = true;
+            game.matchRows[1].matches[pickUpMatchCount - 1].imageURI = "";
+            refreshMatchesTemp()
+        }
+    } else if (evt.target.id === 'rowBtn3') {
+        if (game.matchRows[2].matches.length > 0) {
+            pickUpMatchCount++;
+            selectedRow = game.matchRows[2];
+            console.log("Hit row3");
+            document.getElementById("rowBtn1").disabled = true;
+            document.getElementById("rowBtn2").disabled = true;
+            document.getElementById("rowBtn4").disabled = true;
+            game.matchRows[2].matches[pickUpMatchCount - 1].imageURI = "";
+            refreshMatchesTemp()
+        }
+
+    } else if (evt.target.id === 'rowBtn4') {
+        if (game.matchRows[3].matches.length > 0) {
+            pickUpMatchCount++;
+            selectedRow = game.matchRows[3];
+            console.log("Hit row4");
+            document.getElementById("rowBtn1").disabled = true;
+            document.getElementById("rowBtn2").disabled = true;
+            document.getElementById("rowBtn3").disabled = true;
+            game.matchRows[3].matches[pickUpMatchCount - 1].imageURI = "";
+            refreshMatchesTemp()
+        }
+
     }
-    else if (evt.target.id === 'rowBtn2') {
-        pickUpMatchCount++;
-        selectedRow = game.matchRows[1];
-        console.log("Hit row2");
-        document.getElementById("rowBtn1").disabled = true;
-        document.getElementById("rowBtn3").disabled = true;
-        document.getElementById("rowBtn4").disabled = true;
+}
+
+function refreshMatchesTemp() {
+    for (let i = 0; i < rowIds.length; i++) {
+        while (document.getElementById(rowIds[i]).firstChild) {
+            document.getElementById(rowIds[i]).removeChild(document.getElementById(rowIds[i]).firstChild)
+        }
+        game.matchRows[i].matches.forEach(match => {
+            let node = document.createElement("img");
+            node.classList.add("match")
+            node.src = match.imageURI;
+            document.getElementById(rowIds[i]).appendChild(node);
+        });
     }
-    else if (evt.target.id === 'rowBtn3') {
-        pickUpMatchCount++;
-        selectedRow = game.matchRows[2];
-        console.log("Hit row3");
-        document.getElementById("rowBtn1").disabled = true;
-        document.getElementById("rowBtn2").disabled = true;
-        document.getElementById("rowBtn4").disabled = true;
-    }
-    else if (evt.target.id === 'rowBtn4') {
-        pickUpMatchCount++;
-        selectedRow = game.matchRows[3];
-        console.log("Hit row4");
-        document.getElementById("rowBtn1").disabled = true;
-        document.getElementById("rowBtn2").disabled = true;
-        document.getElementById("rowBtn3").disabled = true;
+}
+
+function refreshMatches() {
+    for (let i = 0; i < rowIds.length; i++) {
+        while (document.getElementById(rowIds[i]).firstChild) {
+            document.getElementById(rowIds[i]).removeChild(document.getElementById(rowIds[i]).firstChild)
+        }
+        game.matchRows[i].matches.forEach(match => {
+            match.imageURI = "match.png"
+            let node = document.createElement("img");
+            node.classList.add("match")
+            node.src = match.imageURI;
+            document.getElementById(rowIds[i]).appendChild(node);
+        });
     }
 }
 
@@ -149,6 +196,7 @@ function endTurn() {
     document.getElementById("rowBtn2").disabled = false;
     document.getElementById("rowBtn3").disabled = false;
     document.getElementById("rowBtn4").disabled = false;
+    refreshMatches()
 }
 
 const rowBtn1 = document.getElementById("rowBtn1");
@@ -162,3 +210,14 @@ rowBtn2.addEventListener("click", findRow);
 rowBtn3.addEventListener("click", findRow);
 rowBtn4.addEventListener("click", findRow);
 endTurnBtn.addEventListener("click", endTurn);
+
+const queryString = window.location.search;
+console.log(queryString)
+
+const urlParams = new URLSearchParams(queryString);
+
+const whoStarts = urlParams.get('whoStarts')
+
+if (whoStarts === "bot") {
+    game.doBotTurn()
+}
