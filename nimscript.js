@@ -180,6 +180,9 @@ function refreshMatches() {
             node.src = match.imageURI;
             document.getElementById(rowIds[i]).appendChild(node);
         });
+        if (game.matchRows[i].matches.length <= 0) {
+            document.getElementById(`rowBtn${i+1}`).style.visibility = "hidden"
+        }
     }
 }
 
