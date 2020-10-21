@@ -60,7 +60,7 @@ class Game {
     }
 
     checkWinner() {
-        isBotTurn ? (declareWinner.innerHTML = "Bot Won!") : (declareWinner.innerHTML = "Player Won!")
+        isBotTurn ? (declareWinner.innerText = "Bot Won!") : (declareWinner.innerText = "Player Won!")
     }
 }
 
@@ -95,7 +95,7 @@ while (!game.isGameOver() && testTurn < 500) {
     console.log("After Pickup: ", ...game.matchRows.map((v) => v.matches.length))
     testTurn++
 }
-bot.checkWinner();
+bot.game.checkWinner();
 
 
 // const rowBtn1 = document.getElementById("rowBtn1");
